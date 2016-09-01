@@ -7,36 +7,31 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'TextStyle'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of TextStyle.'
+  s.name         = "TextStyle"
+  s.version      = "1.0"
+  s.summary      = "TextStyle provides easier management of dynamic font sizing in iOS."
+  s.description  = <<-EOS
+  Easier management of dynamic font sizing in iOS.
+  EOS
+  s.homepage     = "https://github.com/ivanbruel/TextStyle"
+  s.license      = { :type => "MIT", :file => "License" }
+  s.author             = { "Ivan Bruel" => "ivan.bruel@gmail.com" }
+  s.social_media_url   = "http://twitter.com/ivanbruel"
+  s.ios.deployment_target = '9.0'
+  s.source       = { :git => "https://github.com/ivanbruel/TextStyle.git", :tag => s.version }
+  s.default_subspec = "Core"
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
+  s.subspec "Core" do |ss|
+    ss.source_files  = "TextStyle/Classes/*.swift"
+    ss.framework  = "UIKit"
+    ss.framework  = "Foundation"
+  end
 
-  s.description      = <<-DESC
-TODO: Add long description of the pod here.
-                       DESC
+  s.subspec "RxSwift" do |ss|
+    ss.source_files = "TextStyle/Classes/RxSwift/*.swift"
+    ss.dependency "RxSwift", "~> 2.0"
+    ss.dependency "RxCocoa", "~> 2.0"
+    ss.dependency "TextStyle/Core"
+  end
 
-  s.homepage         = 'https://github.com/<GITHUB_USERNAME>/TextStyle'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
-  s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Ivan Bruel' => 'ivan.bruel@gmail.com' }
-  s.source           = { :git => 'https://github.com/<GITHUB_USERNAME>/TextStyle.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
-  s.ios.deployment_target = '8.0'
-
-  s.source_files = 'TextStyle/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'TextStyle' => ['TextStyle/Assets/*.png']
-  # }
-
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end

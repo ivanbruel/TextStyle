@@ -1,11 +1,6 @@
 use_frameworks!
 
 target 'TextStyle_Example' do
-  pod 'TextStyle', :path => '../'
+  pod 'TextStyle/RxSwift', :path => '../'
 
-  target 'TextStyle_Tests' do
-    inherit! :search_paths
-
-    
-  end
 end

@@ -1,0 +1,6 @@
+framework module TextStyle {
+  umbrella header "TextStyle-umbrella.h"
+
+  export *
+  module * { export * }
+}
