@@ -31,6 +31,8 @@ public enum TextStyle {
 
 ## Usage
 
+Check the `Example` project for a better understanding of how `TextStyle` works.
+
 ### Without RxSwift
 
 ```swift
