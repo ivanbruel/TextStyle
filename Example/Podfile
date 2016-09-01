@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'TextStyle_Example' do
+  pod 'TextStyle', :path => '../'
+
+  target 'TextStyle_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
