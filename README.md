@@ -76,6 +76,10 @@ class ViewController: UIViewController {
 }
 ```
 
+## Reminder
+
+iOS 9.3 (which includes the simulator) has a bug in which it doesn't receive the notification, be sure to use either an update iOS device or the iOS 9.2 simulator.
+
 ## Installation
 
 RxResult is available through [CocoaPods](http://cocoapods.org). To install
