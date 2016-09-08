@@ -6,6 +6,8 @@
 
 `TextStyle` provides easier management of dynamic font sizing in iOS.
 
+![Image](http://i.imgur.com/rzB8di9.jpg)
+
 ## Benefits
 
 With `TextStyle` you can support Dynamic Font Sizing in iOS, allowing font size changes through accessibility.
