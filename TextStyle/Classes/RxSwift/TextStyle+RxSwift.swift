@@ -16,6 +16,7 @@ public extension TextStyle {
     return NotificationCenter.default
       .rx.notification(NSNotification.Name.UIContentSizeCategoryDidChange)
       .map { _ in return self.font }
+      .startWith(self.font)
   }
 }
 
