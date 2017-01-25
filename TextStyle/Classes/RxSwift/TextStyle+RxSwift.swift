@@ -13,35 +13,28 @@ import RxCocoa
 public extension TextStyle {
 
   public var rx_font: Observable<UIFont> {
-    return Observable<UIFont>.create { observer in
-      observer.onNext(self.font)
-      let disposable = NSNotificationCenter.defaultCenter()
-        .rx_notification(UIContentSizeCategoryDidChangeNotification)
-        .subscribeNext { _ in
-          observer.onNext(self.font)
-      }
-      return AnonymousDisposable {
-        disposable.dispose()
-        observer.onCompleted()
-      }
-    }
+    return NotificationCenter.default
+      .rx.notification(NSNotification.Name.UIContentSizeCategoryDidChange)
+      .map { _ in return self.font }
   }
 }
 
-public extension UILabel {
+public extension Reactive where Base: UILabel {
 
-  public var rx_font: AnyObserver<UIFont> {
-    return UIBindingObserver(UIElement: self) { label, font in
+  public var font: AnyObserver<UIFont> {
+    return UIBindingObserver(UIElement: self.base) { label, font in
       label.font = font
       }.asObserver()
   }
 }
 
-public extension UIButton {
 
-  public var rx_font: AnyObserver<UIFont> {
-    return UIBindingObserver(UIElement: self) { button, font in
+public extension Reactive where Base: UIButton {
+
+  public var font: AnyObserver<UIFont> {
+    return UIBindingObserver(UIElement: self.base) { button, font in
       button.titleLabel?.font = font
       }.asObserver()
   }
 }
+

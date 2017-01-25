@@ -14,12 +14,12 @@ class ViewController: UIViewController {
 
   @IBOutlet var labels: [UILabel]!
 
-  private let disposeBag = DisposeBag()
+  fileprivate let disposeBag = DisposeBag()
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    let textStyles: [TextStyle] = [.Title1, .Title2, .Headline, .Subheadline, .Body,
-                                    .Caption1, .Caption2, .Footnote, .Callout]
+    let textStyles: [TextStyle] = [.title1, .title2, .headline, .subheadline, .body,
+                                    .caption1, .caption2, .footnote, .callout]
     let texts: [String] = ["Title1", "Title2", "Headline", "Subheadline", "Body", "Caption1",
                            "Caption2", "Footnote", "Callout"]
     for index in 0..<labels.count {
@@ -28,7 +28,7 @@ class ViewController: UIViewController {
       let text = texts[index]
 
       label.text = text
-      textStyle.rx_font.bindTo(label.rx_font)
+      textStyle.rx_font.bindTo(label.rx.font)
         .addDisposableTo(disposeBag)
     }
     // Do any additional setup after loading the view, typically from a nib.

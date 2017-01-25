@@ -9,50 +9,50 @@
 import UIKit
 import Foundation
 
-public enum TextStyle {
+public enum TextStyle: String {
 
-  case Title1
-  case Title2
-  case Headline
-  case Subheadline
-  case Body
-  case Caption1
-  case Caption2
-  case Footnote
-  case Callout
+  case title1
+  case title2
+  case headline
+  case subheadline
+  case body
+  case caption1
+  case caption2
+  case footnote
+  case callout
 
   public var font: UIFont {
     switch self {
-    case .Title1:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleTitle1)
-    case .Title2:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleTitle2)
-    case .Headline:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleHeadline)
-    case .Subheadline:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-    case .Body:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleBody)
-    case .Caption1:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption1)
-    case .Caption2:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCaption2)
-    case .Footnote:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleFootnote)
-    case .Callout:
-      return UIFont.preferredFontForTextStyle(UIFontTextStyleCallout)
+    case .title1:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+    case .title2:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
+    case .headline:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
+    case .subheadline:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+    case .body:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+    case .caption1:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+    case .caption2:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
+    case .footnote:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.footnote)
+    case .callout:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.callout)
     }
   }
 
-  public static func observeFontChanged(observer: AnyObject, selector aSelector: Selector) {
-    NSNotificationCenter.defaultCenter()
-      .addObserver(observer, selector: aSelector, name: UIContentSizeCategoryDidChangeNotification,
+  public static func observeFontChanged(_ observer: AnyObject, selector aSelector: Selector) {
+    NotificationCenter.default
+      .addObserver(observer, selector: aSelector, name: NSNotification.Name.UIContentSizeCategoryDidChange,
                    object: nil)
   }
 
-  public static func removeObserver(observer: AnyObject) {
-    NSNotificationCenter.defaultCenter()
-      .removeObserver(observer, name: UIContentSizeCategoryDidChangeNotification,
+  public static func removeObserver(_ observer: AnyObject) {
+    NotificationCenter.default
+      .removeObserver(observer, name: NSNotification.Name.UIContentSizeCategoryDidChange,
                       object: nil)
   }
 }

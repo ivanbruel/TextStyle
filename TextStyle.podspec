@@ -30,8 +30,8 @@ Pod::Spec.new do |s|
 
   s.subspec "RxSwift" do |ss|
     ss.source_files = "TextStyle/Classes/RxSwift/*.swift"
-    ss.dependency "RxSwift", "~> 2.0"
-    ss.dependency "RxCocoa", "~> 2.0"
+    ss.dependency "RxSwift", "~> 3.1.0"
+    ss.dependency "RxCocoa", "~> 3.1.0"
     ss.dependency "TextStyle/Core"
   end
 
