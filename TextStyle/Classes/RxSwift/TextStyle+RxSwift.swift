@@ -17,11 +17,11 @@ public extension TextStyle {
       .map { _ in return self.font }
       .startWith(self.font)
   }
-  
-  public var rx_changed: Observable<Bool> {
+
+  public var rx_changed: Observable<Void> {
     return NotificationCenter.default
       .rx.notification(NSNotification.Name.UIContentSizeCategoryDidChange)
-      .map { _ in return Void() }
+      .map { _ in Void() }
   }
 }
 
@@ -43,4 +43,3 @@ public extension Reactive where Base: UIButton {
       }.asObserver()
   }
 }
-
