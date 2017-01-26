@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "TextStyle"
-  s.version      = "1.2"
+  s.version      = "1.2.1"
   s.summary      = "TextStyle provides easier management of dynamic font sizing in iOS."
   s.description  = <<-EOS
   TextStyle easier management of dynamic font sizing in iOS. Also adds RxSwift bindings for

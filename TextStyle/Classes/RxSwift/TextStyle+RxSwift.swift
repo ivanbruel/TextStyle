@@ -13,12 +13,12 @@ import RxCocoa
 public extension TextStyle {
 
   public var rx_font: Observable<UIFont> {
-    return rx_changed
+    return TextStyle.rx_changed()
       .map { _ in return self.font }
       .startWith(self.font)
   }
 
-  public var rx_changed: Observable<Void> {
+  public static func rx_changed() -> Observable<Void> {
     return NotificationCenter.default
       .rx.notification(NSNotification.Name.UIContentSizeCategoryDidChange)
       .map { _ in Void() }
