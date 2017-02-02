@@ -43,3 +43,12 @@ public extension Reactive where Base: UIButton {
       }.asObserver()
   }
 }
+
+public extension Reactive where Base: UITextField {
+
+  public var font: AnyObserver<UIFont> {
+    return UIBindingObserver(UIElement: self.base) { textField, font in
+      textField.font = font
+    }.asObserver()
+  }
+}
