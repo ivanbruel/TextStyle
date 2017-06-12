@@ -13,6 +13,7 @@ public enum TextStyle: String {
 
   case title1
   case title2
+  case title3
   case headline
   case subheadline
   case body
@@ -27,6 +28,8 @@ public enum TextStyle: String {
       return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
     case .title2:
       return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
+    case .title3:
+      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title3)
     case .headline:
       return UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
     case .subheadline:
