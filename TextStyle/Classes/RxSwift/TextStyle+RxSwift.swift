@@ -28,7 +28,7 @@ public extension TextStyle {
 public extension Reactive where Base: UILabel {
 
   public var font: AnyObserver<UIFont> {
-    return UIBindingObserver(UIElement: self.base) { label, font in
+    return Binder(self.base) { label, font in
       label.font = font
       }.asObserver()
   }
@@ -38,7 +38,7 @@ public extension Reactive where Base: UILabel {
 public extension Reactive where Base: UIButton {
 
   public var font: AnyObserver<UIFont> {
-    return UIBindingObserver(UIElement: self.base) { button, font in
+    return Binder(self.base) { button, font in
       button.titleLabel?.font = font
       }.asObserver()
   }
@@ -47,7 +47,7 @@ public extension Reactive where Base: UIButton {
 public extension Reactive where Base: UITextField {
 
   public var font: AnyObserver<UIFont> {
-    return UIBindingObserver(UIElement: self.base) { textField, font in
+    return Binder(self.base) { textField, font in
       textField.font = font
     }.asObserver()
   }
@@ -56,7 +56,7 @@ public extension Reactive where Base: UITextField {
 public extension Reactive where Base: UITextView {
 
   public var font: AnyObserver<UIFont> {
-    return UIBindingObserver(UIElement: self.base) { textView, font in
+    return Binder(self.base) { textView, font in
       textView.font = font
     }.asObserver()
   }
