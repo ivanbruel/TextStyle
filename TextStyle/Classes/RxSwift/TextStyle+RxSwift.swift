@@ -20,7 +20,7 @@ public extension TextStyle {
 
   public static func rx_changed() -> Observable<Void> {
     return NotificationCenter.default
-      .rx.notification(NSNotification.Name.UIContentSizeCategoryDidChange)
+      .rx.notification(UIContentSizeCategory.didChangeNotification)
       .map { _ in Void() }
   }
 }
