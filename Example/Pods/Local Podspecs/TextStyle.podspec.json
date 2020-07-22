@@ -1,6 +1,6 @@
 {
   "name": "TextStyle",
-  "version": "1.4.3",
+  "version": "1.5.0",
   "summary": "TextStyle provides easier management of dynamic font sizing in iOS.",
   "description": "TextStyle easier management of dynamic font sizing in iOS. Also adds RxSwift bindings for\nreactive changes.",
   "homepage": "https://github.com/ivanbruel/TextStyle",
@@ -17,7 +17,7 @@
   },
   "source": {
     "git": "https://github.com/ivanbruel/TextStyle.git",
-    "tag": "1.4.3"
+    "tag": "1.5.0"
   },
   "default_subspecs": "Core",
   "subspecs": [
@@ -31,10 +31,10 @@
       "source_files": "TextStyle/Classes/RxSwift/*.swift",
       "dependencies": {
         "RxSwift": [
-          "~> 4"
+          "~> 5"
         ],
         "RxCocoa": [
-          "~> 4"
+          "~> 5"
         ],
         "TextStyle/Core": [
 

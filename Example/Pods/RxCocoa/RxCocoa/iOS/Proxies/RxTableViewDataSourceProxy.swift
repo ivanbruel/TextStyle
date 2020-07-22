@@ -9,17 +9,15 @@
 #if os(iOS) || os(tvOS)
 
 import UIKit
-#if !RX_NO_MODULE
 import RxSwift
-#endif
     
 extension UITableView: HasDataSource {
     public typealias DataSource = UITableViewDataSource
 }
 
-let tableViewDataSourceNotSet = TableViewDataSourceNotSet()
+private let tableViewDataSourceNotSet = TableViewDataSourceNotSet()
 
-final class TableViewDataSourceNotSet
+private final class TableViewDataSourceNotSet
     : NSObject
     , UITableViewDataSource {
 
@@ -52,7 +50,7 @@ open class RxTableViewDataSourceProxy
         self.register { RxTableViewDataSourceProxy(tableView: $0) }
     }
 
-    fileprivate weak var _requiredMethodsDataSource: UITableViewDataSource? = tableViewDataSourceNotSet
+    private weak var _requiredMethodsDataSource: UITableViewDataSource? = tableViewDataSourceNotSet
 
     // MARK: delegate
 

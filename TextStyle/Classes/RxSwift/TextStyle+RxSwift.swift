@@ -12,13 +12,13 @@ import RxCocoa
 
 public extension TextStyle {
 
-  public var rx_font: Observable<UIFont> {
+    var rx_font: Observable<UIFont> {
     return TextStyle.rx_changed()
       .map { _ in return self.font }
       .startWith(self.font)
   }
 
-  public static func rx_changed() -> Observable<Void> {
+    static func rx_changed() -> Observable<Void> {
     return NotificationCenter.default
       .rx.notification(UIContentSizeCategory.didChangeNotification)
       .map { _ in Void() }
@@ -27,7 +27,7 @@ public extension TextStyle {
 
 public extension Reactive where Base: UILabel {
 
-  public var font: AnyObserver<UIFont> {
+    var font: AnyObserver<UIFont> {
     return Binder(self.base) { label, font in
       label.font = font
       }.asObserver()
@@ -37,7 +37,7 @@ public extension Reactive where Base: UILabel {
 
 public extension Reactive where Base: UIButton {
 
-  public var font: AnyObserver<UIFont> {
+    var font: AnyObserver<UIFont> {
     return Binder(self.base) { button, font in
       button.titleLabel?.font = font
       }.asObserver()
@@ -46,7 +46,7 @@ public extension Reactive where Base: UIButton {
 
 public extension Reactive where Base: UITextField {
 
-  public var font: AnyObserver<UIFont> {
+    var font: AnyObserver<UIFont> {
     return Binder(self.base) { textField, font in
       textField.font = font
     }.asObserver()
@@ -55,7 +55,7 @@ public extension Reactive where Base: UITextField {
 
 public extension Reactive where Base: UITextView {
 
-  public var font: AnyObserver<UIFont> {
+    var font: AnyObserver<UIFont> {
     return Binder(self.base) { textView, font in
       textView.font = font
     }.asObserver()
