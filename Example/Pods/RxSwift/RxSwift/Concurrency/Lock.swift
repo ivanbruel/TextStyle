@@ -6,32 +6,30 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-import Foundation
-
 protocol Lock {
     func lock()
     func unlock()
 }
 
 // https://lists.swift.org/pipermail/swift-dev/Week-of-Mon-20151214/000321.html
-typealias SpinLock = NSRecursiveLock
+typealias SpinLock = RecursiveLock
 
-extension NSRecursiveLock : Lock {
+extension RecursiveLock : Lock {
     @inline(__always)
-    func performLocked(_ action: () -> Void) {
-        lock(); defer { unlock() }
+    final func performLocked(_ action: () -> Void) {
+        self.lock(); defer { self.unlock() }
         action()
     }
 
     @inline(__always)
-    func calculateLocked<T>(_ action: () -> T) -> T {
-        lock(); defer { unlock() }
+    final func calculateLocked<T>(_ action: () -> T) -> T {
+        self.lock(); defer { self.unlock() }
         return action()
     }
 
     @inline(__always)
-    func calculateLockedOrFail<T>(_ action: () throws -> T) throws -> T {
-        lock(); defer { unlock() }
+    final func calculateLockedOrFail<T>(_ action: () throws -> T) throws -> T {
+        self.lock(); defer { self.unlock() }
         let result = try action()
         return result
     }

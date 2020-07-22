@@ -1,25 +1,35 @@
 PODS:
-  - RxCocoa (3.1.0):
-    - RxSwift (~> 3.1)
-  - RxSwift (3.1.0)
-  - TextStyle/Core (1.0.1)
-  - TextStyle/RxSwift (1.0.1):
-    - RxCocoa (~> 3.1.0)
-    - RxSwift (~> 3.1.0)
+  - RxCocoa (5.1.1):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.1.1):
+    - RxSwift (~> 5)
+  - RxSwift (5.1.1)
+  - TextStyle/Core (1.5.0)
+  - TextStyle/RxSwift (1.5.0):
+    - RxCocoa (~> 5)
+    - RxSwift (~> 5)
     - TextStyle/Core
 
 DEPENDENCIES:
   - TextStyle/RxSwift (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - RxCocoa
+    - RxRelay
+    - RxSwift
 
 EXTERNAL SOURCES:
   TextStyle:
     :path: "../"
 
 SPEC CHECKSUMS:
-  RxCocoa: 50d7564866da9299161e86a263ce12a0873904d8
-  RxSwift: 83ff553e7593fdfdcb2562933a64c0284dffdadc
-  TextStyle: 9609ca8a6d147c1673659436f4456a8a3206651e
+  RxCocoa: 32065309a38d29b5b0db858819b5bf9ef038b601
+  RxRelay: d77f7d771495f43c556cbc43eebd1bb54d01e8e9
+  RxSwift: 81470a2074fa8780320ea5fe4102807cb7118178
+  TextStyle: a47cc0d41b8a4f42fad2ae36810daf256f241cc9
 
 PODFILE CHECKSUM: c3f18157be806839a969367f937c07b52a4b2718
 
-COCOAPODS: 1.2.0.rc.1
+COCOAPODS: 1.9.3

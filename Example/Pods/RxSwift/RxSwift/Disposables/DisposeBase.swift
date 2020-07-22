@@ -6,19 +6,17 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-import Foundation
-
 /// Base class for all disposables.
 public class DisposeBase {
     init() {
 #if TRACE_RESOURCES
-    let _ = Resources.incrementTotal()
+    _ = Resources.incrementTotal()
 #endif
     }
     
     deinit {
 #if TRACE_RESOURCES
-    let _ = Resources.decrementTotal()
+    _ = Resources.decrementTotal()
 #endif
     }
 }

@@ -8,16 +8,12 @@
 
 #if os(iOS) || os(tvOS) || os(macOS)
 
-import Foundation
-#if !RX_NO_MODULE
 import RxSwift
-#endif
 
 #if os(iOS) || os(tvOS)
     import UIKit
 
     typealias Control = UIKit.UIControl
-    typealias ControlEvents = UIKit.UIControlEvents
 #elseif os(macOS)
     import Cocoa
 
@@ -25,19 +21,19 @@ import RxSwift
 #endif
 
 // This should be only used from `MainScheduler`
-class ControlTarget: RxTarget {
+final class ControlTarget: RxTarget {
     typealias Callback = (Control) -> Void
 
     let selector: Selector = #selector(ControlTarget.eventHandler(_:))
 
     weak var control: Control?
 #if os(iOS) || os(tvOS)
-    let controlEvents: UIControlEvents
+    let controlEvents: UIControl.Event
 #endif
     var callback: Callback?
     #if os(iOS) || os(tvOS)
-    init(control: Control, controlEvents: UIControlEvents, callback: @escaping Callback) {
-        MainScheduler.ensureExecutingOnScheduler()
+    init(control: Control, controlEvents: UIControl.Event, callback: @escaping Callback) {
+        MainScheduler.ensureRunningOnMainThread()
 
         self.control = control
         self.controlEvents = controlEvents
@@ -54,7 +50,7 @@ class ControlTarget: RxTarget {
     }
 #elseif os(macOS)
     init(control: Control, callback: @escaping Callback) {
-        MainScheduler.ensureExecutingOnScheduler()
+        MainScheduler.ensureRunningOnMainThread()
 
         self.control = control
         self.callback = callback
@@ -62,16 +58,16 @@ class ControlTarget: RxTarget {
         super.init()
 
         control.target = self
-        control.action = selector
+        control.action = self.selector
 
-        let method = self.method(for: selector)
+        let method = self.method(for: self.selector)
         if method == nil {
             rxFatalError("Can't find method")
         }
     }
 #endif
 
-    func eventHandler(_ sender: Control!) {
+    @objc func eventHandler(_ sender: Control!) {
         if let callback = self.callback, let control = self.control {
             callback(control)
         }

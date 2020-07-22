@@ -6,7 +6,6 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-import Foundation
 import Swift
 
 let arrayDictionaryMaxSize = 30
@@ -26,7 +25,7 @@ Data structure that represents a bag of elements typed `T`.
 
 Single element can be stored multiple times.
 
-Time and space complexity of insertion an deletion is O(n). 
+Time and space complexity of insertion and deletion is O(n). 
 
 It is suitable for storing small number of elements.
 */
@@ -36,16 +35,19 @@ struct Bag<T> : CustomDebugStringConvertible {
     
     typealias Entry = (key: BagKey, value: T)
  
-    fileprivate var _nextKey: BagKey = BagKey(rawValue: 0)
+    private var _nextKey: BagKey = BagKey(rawValue: 0)
 
     // data
 
     // first fill inline variables
-    var _key0: BagKey? = nil
-    var _value0: T? = nil
+    var _key0: BagKey?
+    var _value0: T?
+
+    // then fill "array dictionary"
+    var _pairs = ContiguousArray<Entry>()
 
     // last is sparse dictionary
-    var _dictionary: [BagKey : T]? = nil
+    var _dictionary: [BagKey: T]?
 
     var _onlyFastPath = true
 
@@ -77,11 +79,12 @@ struct Bag<T> : CustomDebugStringConvertible {
             return key
         }
 
-        if _dictionary == nil {
-            _dictionary = [:]
+        if _pairs.count < arrayDictionaryMaxSize {
+            _pairs.append((key: key, value: element))
+            return key
         }
-
-        _dictionary![key] = element
+        
+        _dictionary = [key: element]
         
         return key
     }
@@ -89,7 +92,7 @@ struct Bag<T> : CustomDebugStringConvertible {
     /// - returns: Number of elements in bag.
     var count: Int {
         let dictionaryCount: Int = _dictionary?.count ?? 0
-        return (_value0 != nil ? 1 : 0) + dictionaryCount
+        return (_value0 != nil ? 1 : 0) + _pairs.count + dictionaryCount
     }
     
     /// Removes all elements from bag and clears capacity.
@@ -97,6 +100,7 @@ struct Bag<T> : CustomDebugStringConvertible {
         _key0 = nil
         _value0 = nil
 
+        _pairs.removeAll(keepingCapacity: false)
         _dictionary?.removeAll(keepingCapacity: false)
     }
     
@@ -116,6 +120,12 @@ struct Bag<T> : CustomDebugStringConvertible {
 
         if let existingObject = _dictionary?.removeValue(forKey: key) {
             return existingObject
+        }
+
+        for i in 0 ..< _pairs.count where _pairs[i].key == key {
+            let value = _pairs[i].value
+            _pairs.remove(at: i)
+            return value
         }
 
         return nil
@@ -148,6 +158,10 @@ extension Bag {
             action(value0)
         }
 
+        for i in 0 ..< _pairs.count {
+            action(_pairs[i].value)
+        }
+
         if dictionary?.count ?? 0 > 0 {
             for element in dictionary!.values {
                 action(element)
@@ -157,8 +171,8 @@ extension Bag {
 }
 
 extension BagKey: Hashable {
-    var hashValue: Int {
-        return rawValue.hashValue
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
     }
 }
 

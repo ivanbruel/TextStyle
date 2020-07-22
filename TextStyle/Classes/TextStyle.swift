@@ -24,35 +24,35 @@ public enum TextStyle: String {
   public var font: UIFont {
     switch self {
     case .title1:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+        return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title1)
     case .title2:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.title2)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.title2)
     case .headline:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.headline)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.headline)
     case .subheadline:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.subheadline)
     case .body:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.body)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.body)
     case .caption1:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption1)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption1)
     case .caption2:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.caption2)
     case .footnote:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.footnote)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.footnote)
     case .callout:
-      return UIFont.preferredFont(forTextStyle: UIFontTextStyle.callout)
+      return UIFont.preferredFont(forTextStyle: UIFont.TextStyle.callout)
     }
   }
 
   public static func observeFontChanged(_ observer: AnyObject, selector aSelector: Selector) {
     NotificationCenter.default
-      .addObserver(observer, selector: aSelector, name: NSNotification.Name.UIContentSizeCategoryDidChange,
+        .addObserver(observer, selector: aSelector, name: UIContentSizeCategory.didChangeNotification,
                    object: nil)
   }
 
   public static func removeObserver(_ observer: AnyObject) {
     NotificationCenter.default
-      .removeObserver(observer, name: NSNotification.Name.UIContentSizeCategoryDidChange,
+        .removeObserver(observer, name: UIContentSizeCategory.didChangeNotification,
                       object: nil)
   }
 }

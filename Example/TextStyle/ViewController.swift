@@ -28,8 +28,8 @@ class ViewController: UIViewController {
       let text = texts[index]
 
       label.text = text
-      textStyle.rx_font.bindTo(label.rx.font)
-        .addDisposableTo(disposeBag)
+        textStyle.rx_font.bind(to: label.rx.font)
+            .disposed(by: disposeBag)
     }
     // Do any additional setup after loading the view, typically from a nib.
   }

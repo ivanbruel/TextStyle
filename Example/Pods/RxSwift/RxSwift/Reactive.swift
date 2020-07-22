@@ -37,13 +37,16 @@ public struct Reactive<Base> {
 /// A type that has reactive extensions.
 public protocol ReactiveCompatible {
     /// Extended type
-    associatedtype CompatibleType
+    associatedtype ReactiveBase
+
+    @available(*, deprecated, renamed: "ReactiveBase")
+    typealias CompatibleType = ReactiveBase
 
     /// Reactive extensions.
-    static var rx: Reactive<CompatibleType>.Type { get set }
+    static var rx: Reactive<ReactiveBase>.Type { get set }
 
     /// Reactive extensions.
-    var rx: Reactive<CompatibleType> { get set }
+    var rx: Reactive<ReactiveBase> { get set }
 }
 
 extension ReactiveCompatible {
@@ -52,6 +55,7 @@ extension ReactiveCompatible {
         get {
             return Reactive<Self>.self
         }
+        // swiftlint:disable:next unused_setter_value
         set {
             // this enables using Reactive to "mutate" base type
         }
@@ -62,13 +66,14 @@ extension ReactiveCompatible {
         get {
             return Reactive(self)
         }
+        // swiftlint:disable:next unused_setter_value
         set {
             // this enables using Reactive to "mutate" base object
         }
     }
 }
 
-import Foundation
+import class Foundation.NSObject
 
 /// Extend NSObject with `rx` proxy.
 extension NSObject: ReactiveCompatible { }

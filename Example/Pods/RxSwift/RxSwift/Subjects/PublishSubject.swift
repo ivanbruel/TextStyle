@@ -6,72 +6,83 @@
 //  Copyright © 2015 Krunoslav Zaher. All rights reserved.
 //
 
-import Foundation
-
 /// Represents an object that is both an observable sequence as well as an observer.
 ///
 /// Each notification is broadcasted to all subscribed observers.
-final public class PublishSubject<Element>
+public final class PublishSubject<Element>
     : Observable<Element>
     , SubjectType
     , Cancelable
     , ObserverType
     , SynchronizedUnsubscribeType {
     public typealias SubjectObserverType = PublishSubject<Element>
-    
-    typealias DisposeKey = Bag<AnyObserver<Element>>.KeyType
+
+    typealias Observers = AnyObserver<Element>.s
+    typealias DisposeKey = Observers.KeyType
     
     /// Indicates whether the subject has any observers
     public var hasObservers: Bool {
-        _lock.lock(); defer { _lock.unlock() }
-        return _observers.count > 0
+        self._lock.lock()
+        let count = self._observers.count > 0
+        self._lock.unlock()
+        return count
     }
     
-    private var _lock = NSRecursiveLock()
+    private let _lock = RecursiveLock()
     
     // state
     private var _isDisposed = false
-    private var _observers = Bag<AnyObserver<Element>>()
+    private var _observers = Observers()
     private var _stopped = false
     private var _stoppedEvent = nil as Event<Element>?
-    
+
+    #if DEBUG
+        private let _synchronizationTracker = SynchronizationTracker()
+    #endif
+
     /// Indicates whether the subject has been isDisposed.
     public var isDisposed: Bool {
-        return _isDisposed
+        return self._isDisposed
     }
     
     /// Creates a subject.
     public override init() {
         super.init()
+        #if TRACE_RESOURCES
+            _ = Resources.incrementTotal()
+        #endif
     }
     
     /// Notifies all subscribed observers about next event.
     ///
     /// - parameter event: Event to send to the observers.
     public func on(_ event: Event<Element>) {
-        _synchronized_on(event).on(event)
+        #if DEBUG
+            self._synchronizationTracker.register(synchronizationErrorMessage: .default)
+            defer { self._synchronizationTracker.unregister() }
+        #endif
+        dispatch(self._synchronized_on(event), event)
     }
 
-    func _synchronized_on(_ event: Event<E>) -> Bag<AnyObserver<Element>> {
-        _lock.lock(); defer { _lock.unlock() }
-
+    func _synchronized_on(_ event: Event<Element>) -> Observers {
+        self._lock.lock(); defer { self._lock.unlock() }
         switch event {
-        case .next(_):
-            if _isDisposed || _stopped {
-                return Bag()
+        case .next:
+            if self._isDisposed || self._stopped {
+                return Observers()
             }
             
-            return _observers
+            return self._observers
         case .completed, .error:
-            if _stoppedEvent == nil {
-                _stoppedEvent = event
-                _stopped = true
-                let observers = _observers
-                _observers.removeAll()
+            if self._stoppedEvent == nil {
+                self._stoppedEvent = event
+                self._stopped = true
+                let observers = self._observers
+                self._observers.removeAll()
                 return observers
             }
 
-            return Bag()
+            return Observers()
         }
     }
     
@@ -81,33 +92,36 @@ final public class PublishSubject<Element>
     - parameter observer: Observer to subscribe to the subject.
     - returns: Disposable object that can be used to unsubscribe the observer from the subject.
     */
-    public override func subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == Element {
-        _lock.lock(); defer { _lock.unlock() }
-        return _synchronized_subscribe(observer)
+    public override func subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
+        self._lock.lock()
+        let subscription = self._synchronized_subscribe(observer)
+        self._lock.unlock()
+        return subscription
     }
 
-    func _synchronized_subscribe<O : ObserverType>(_ observer: O) -> Disposable where O.E == E {
-        if let stoppedEvent = _stoppedEvent {
+    func _synchronized_subscribe<Observer: ObserverType>(_ observer: Observer) -> Disposable where Observer.Element == Element {
+        if let stoppedEvent = self._stoppedEvent {
             observer.on(stoppedEvent)
             return Disposables.create()
         }
         
-        if _isDisposed {
+        if self._isDisposed {
             observer.on(.error(RxError.disposed(object: self)))
             return Disposables.create()
         }
         
-        let key = _observers.insert(observer.asObserver())
+        let key = self._observers.insert(observer.on)
         return SubscriptionDisposable(owner: self, key: key)
     }
 
     func synchronizedUnsubscribe(_ disposeKey: DisposeKey) {
-        _lock.lock(); defer { _lock.unlock() }
-        _synchronized_unsubscribe(disposeKey)
+        self._lock.lock()
+        self._synchronized_unsubscribe(disposeKey)
+        self._lock.unlock()
     }
 
     func _synchronized_unsubscribe(_ disposeKey: DisposeKey) {
-        _ = _observers.removeKey(disposeKey)
+        _ = self._observers.removeKey(disposeKey)
     }
     
     /// Returns observer interface for subject.
@@ -117,13 +131,20 @@ final public class PublishSubject<Element>
     
     /// Unsubscribe all observers and release resources.
     public func dispose() {
-        _lock.lock(); defer { _lock.unlock() }
-        _synchronized_dispose()
+        self._lock.lock()
+        self._synchronized_dispose()
+        self._lock.unlock()
     }
 
     final func _synchronized_dispose() {
-        _isDisposed = true
-        _observers.removeAll()
-        _stoppedEvent = nil
+        self._isDisposed = true
+        self._observers.removeAll()
+        self._stoppedEvent = nil
     }
+
+    #if TRACE_RESOURCES
+        deinit {
+            _ = Resources.decrementTotal()
+        }
+    #endif
 }
